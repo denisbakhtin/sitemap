@@ -47,6 +47,7 @@ XML sitemap
   }
 
 ```
+For periodical sitemap generation you may use something like this: https://github.com/jasonlvhit/gocron
 
 #TODO
 - Image, Video sitemap
