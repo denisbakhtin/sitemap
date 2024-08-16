@@ -19,7 +19,7 @@ XML sitemap
     items = append(items, sitemap.Item{
       Loc:        fmt.Sprintf("%s", domain),
       LastMod:    now,
-      Changefreq: "daily",
+      Changefreq: sitemap.Daily,
       Priority:   1,
     })
 
