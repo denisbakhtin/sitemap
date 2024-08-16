@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"compress/gzip"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"strings"
@@ -35,15 +34,33 @@ const (
 	</sitemap>`
 )
 
+type Frequency int
+
+// The value "always" should be used to describe documents that change each time they are accessed. The value "never" should be used to describe archived URLs.
+// Please note that the value of this tag is considered a hint and not a command.
+const (
+	Always Frequency = iota
+	Hourly
+	Daily
+	Weekly
+	Monthly
+	Yearly
+	Never
+)
+
+func (f Frequency) String() string {
+	return [...]string{"always", "hourly", "daily", "weekly", "monthly", "yearly", "never"}[f]
+}
+
 type Item struct {
 	Loc        string
 	LastMod    time.Time
-	Changefreq string
+	Changefreq Frequency
 	Priority   float32
 }
 
 func (item *Item) String() string {
-	return fmt.Sprintf(template, item.Loc, item.LastMod.Format("2006-01-02T15:04:05+08:00"), item.Changefreq, item.Priority)
+	return fmt.Sprintf(template, item.Loc, item.LastMod.Format("2006-01-02"), item.Changefreq, item.Priority)
 }
 
 func SiteMap(f string, items []Item) error {
@@ -71,13 +88,13 @@ func SiteMap(f string, items []Item) error {
 func SiteMapIndex(folder, indexFile, baseurl string) error {
 	var buffer bytes.Buffer
 	buffer.WriteString(indexHeader)
-	fs, err := ioutil.ReadDir(folder)
+	fs, err := os.ReadDir(folder)
 	if err != nil {
 		return err
 	}
 	for _, f := range fs {
 		if strings.HasSuffix(f.Name(), ".xml.gz") {
-			s := fmt.Sprintf(indexTemplate, baseurl, f.Name(), time.Now().Format("2006-01-02T15:04:05+08:00"))
+			s := fmt.Sprintf(indexTemplate, baseurl, f.Name(), time.Now().Format("2006-01-02"))
 			buffer.WriteString(s)
 		}
 	}
