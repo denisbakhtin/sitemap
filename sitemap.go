@@ -109,7 +109,11 @@ func SiteMapIndex(folder, indexFile, baseurl string) error {
 	}
 	for _, f := range fs {
 		if strings.HasSuffix(f.Name(), ".xml.gz") {
-			s := fmt.Sprintf(indexTemplate, baseurl, f.Name(), time.Now().Format("2006-01-02"))
+			info, err := f.Info()
+			if err != nil {
+				return err
+			}
+			s := fmt.Sprintf(indexTemplate, baseurl, f.Name(), info.ModTime().Format("2006-01-02"))
 			buffer.WriteString(s)
 		}
 	}
