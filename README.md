@@ -29,7 +29,7 @@ XML sitemap
       items = append(items, sitemap.Item{
         Loc:        fmt.Sprintf("%s/pages/%d", domain, pages[i].Id), //page url
         LastMod:    pages[i].UpdatedAt, //page modification timestamp (time.Time)
-        Changefreq: "monthly", //or "weekly", "daily", "hourly", ...
+        Changefreq: sitemap.Weekly, //or "hourly", "daily", ...
         Priority:   0.8,
       })
     }
@@ -48,10 +48,3 @@ XML sitemap
 
 ```
 For periodical sitemap generation you may use something like this: https://github.com/jasonlvhit/gocron
-
-#TODO
-- Image, Video sitemap
-- Split large sitemaps by threshold (50.000 items)
-- Ping search engines?
-
-Generate gzipped Google sitemap and sitemap index with golang

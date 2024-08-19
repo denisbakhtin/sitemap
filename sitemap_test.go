@@ -7,7 +7,7 @@ import (
 
 func TestItemString(t *testing.T) {
 	lastMod := time.Date(2024, 12, 1, 1, 1, 1, 1, time.Local)
-	item := Item{Loc: "/111.html", LastMod: lastMod, Changefreq: Daily, Priority: 0.2}
+	item := Page{Loc: "/111.html", LastMod: lastMod, Changefreq: Daily, Priority: 0.2}
 	got := item.String()
 	want := `
 	<url>
